@@ -1,0 +1,5 @@
+C:\Projects_RW\Proceedings\ProceedingsWebApp\ProceedingsWebApp\bin\ProceedingsWebApp.dll
+C:\Projects_RW\Proceedings\ProceedingsWebApp\ProceedingsWebApp\bin\ProceedingsWebApp.pdb
+C:\Projects_RW\Proceedings\ProceedingsWebApp\ProceedingsWebApp\obj\Debug\ProceedingsWebApp.csprojResolveAssemblyReference.cache
+C:\Projects_RW\Proceedings\ProceedingsWebApp\ProceedingsWebApp\obj\Debug\ProceedingsWebApp.dll
+C:\Projects_RW\Proceedings\ProceedingsWebApp\ProceedingsWebApp\obj\Debug\ProceedingsWebApp.pdb

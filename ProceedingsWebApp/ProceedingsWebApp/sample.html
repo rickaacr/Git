@@ -1,0 +1,139 @@
+﻿<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		
+		<script>
+
+		    // ----------------------------------------------------------------------
+		    // JSON data structure used to populate the abstract details
+		    // ----------------------------------------------------------------------
+
+		    var outputJson = {
+		        "ID": "",
+		        "Title": "",
+		        "PresentingAuthor": {
+		            "Name": "",
+		            "InstituteID": ""
+		        },
+		        "OtherAuthors": [{
+		            "Name": "",
+		            "InstituteID": ""
+		        }],
+		        "Institutes": [{
+		            "Name": "",
+		            "InstituteID": ""
+		        }],
+		        "Body": ""
+		    };
+
+		    // ----------------------------------------------------------------------
+		    // Load the JSON after the document has loaded
+		    // ----------------------------------------------------------------------
+
+		    $(document).ready(function () {
+		        LoadJSON();
+		    });
+
+		    // ----------------------------------------------------------------------
+		    // Load JSON from .json file
+		    // ----------------------------------------------------------------------
+
+		    function LoadJSON() {
+		        $.getJSON("http://localhost:63046/submission.htm", function (data) { })
+                    .done(function (data) {
+                        var responseData = data.results[11].responses;
+
+                        // Loop for all results (currently using #12 as an example)
+
+                        var abstractID = "";
+                        var abstractTitle = "";
+                        var abstractBody = "";
+                        var abstractPrimaryAuthorFirstName = "";
+                        var abstractPrimaryAuthorLastName = "";
+                        var abstractPrimaryAuthorInstitute = "";
+                        var abstractOtherAuthorOrder1 = "";
+                        var abstractOtherAuthorFirstName1 = "";
+                        var abstractOtherAuthorLastName1 = "";
+                        var abstractOtherAuthorInstitute1 = "";
+                        var abstractInstitutions = new Array();
+
+                        outputJson.ID = "PR" + "01";
+                        outputJson.OtherAuthors = new Array();
+                        outputJson.Institutes = new Array();
+
+                        for (var field in responseData) {
+                            switch (field) {
+                                case "144999":
+
+                                    // Populate Abstract Title and Body
+                                    abstractTitle = responseData[field]["indI8rpg7e"];
+                                    outputJson.Title = abstractTitle;
+
+                                    abstractBody = responseData[field]["Sk8X6Z2Wzo"];
+                                    outputJson.Body = abstractBody;
+
+                                    break;
+
+                                case "146095":
+
+                                    // Populate Primary Author Data
+                                    abstractPrimaryAuthorFirstName = responseData[field]["HGqHz5edqN_0"];
+                                    abstractPrimaryAuthorLastName = responseData[field]["HGqHz5edqN_1"];
+                                    abstractPrimaryAuthorInstitute = responseData[field]["HGqHz5edqN_3"];
+
+                                    outputJson.PresentingAuthor.Name = abstractPrimaryAuthorFirstName + " " + abstractPrimaryAuthorLastName;
+                                    outputJson.PresentingAuthor.InstituteID = "0";
+
+                                    abstractInstitutions.push(abstractPrimaryAuthorInstitute);
+
+                                    // Populate Other Author(s) Data -- 25 max
+                                    abstractOtherAuthorOrder1 = responseData[field]["e8PDbLNWiU_0"];
+                                    abstractOtherAuthorFirstName1 = responseData[field]["e8PDbLNWiU_2"];
+                                    abstractOtherAuthorLastName1 = responseData[field]["e8PDbLNWiU_4"];
+                                    abstractOtherAuthorInstitute1 = responseData[field]["e8PDbLNWiU_5"];
+
+                                    outputJson.OtherAuthors.push({ "Name": abstractOtherAuthorFirstName1 + " " + abstractOtherAuthorLastName1, "InstituteID": "0" });
+                                    outputJson.Institutes.push({ "Name": abstractOtherAuthorInstitute1, "InstituteID": "0" });
+
+                                    abstractInstitutions.push(abstractOtherAuthorInstitute1);
+
+                                    break;
+                            }
+                        }
+
+                        // Use values to populate HTML page
+
+                        var allOtherAuthors = abstractOtherAuthorFirstName1 + " " + abstractOtherAuthorLastName1;
+                        var outputHtml = "#ID# #TITLE# #PRIMARY_AUTHOR# #OTHER_AUTHORS# #INSTITUTIONS# #BODY#";
+
+                        outputHtml = outputHtml.replace("#ID#", outputJson.ID);
+                        outputHtml = outputHtml.replace("#TITLE#", "<b>" + outputJson.Title + "</b>");
+                        outputHtml = outputHtml.replace("#PRIMARY_AUTHOR#", "<u>" + outputJson.PresentingAuthor.Name + "</u>");
+                        outputHtml = outputHtml.replace("#OTHER_AUTHORS#", "");
+                        outputHtml = outputHtml.replace("#INSTITUTIONS#", "");
+                        outputHtml = outputHtml.replace("#BODY#", "<p>" + outputJson.Body + "</p>");
+
+                        //$("#JsonResponse").html(outputHtml);                                            
+                        $("#JsonResponse").html(JSON.stringify(outputJson));
+
+                    }).fail(function (jqxhr, textStatus, error) {
+                        console.log("failure " + textStatus + ", " + error);
+                    }
+                )
+		    }
+
+		    function ProcessAuthorsList() {
+		        // stub to process authors with superscripted ids (after last name) that are associated with institutes
+		    }
+
+		    function ProcessInstitutionsList() {
+		        // stub to process institutes with superscripted ids (before institute name) that are associated with authors
+		    }
+
+		</script>
+	</head>
+	<body>
+		<p>Abstract</p>
+		<div id="JsonResponse" style="width:400px; height:150px;"></div>		
+	</body>
+</html>

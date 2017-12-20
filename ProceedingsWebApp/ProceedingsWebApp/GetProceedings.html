@@ -1,0 +1,650 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>FluidReview API</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		
+		<script>
+		    $(document).ready(function () {
+		        console.log("Document is loaded and ready.");
+		    });
+
+		    function CallWebService() {
+		        var wsUrl = "https://atlas.aacr.org/api/FluidReviewGetMemberID?SecurityKey=243f4591-cb1c-4095-ba61-a2279a9b919b&username=ADMINISTRATOR";
+
+		        $.ajax({
+		            url: wsUrl,
+		            method: "GET",
+		            data: "",
+		            dataType: "JSON",
+		            success: function (data) {
+		                console.log("Success");
+		                console.log("data = [" + data + "]");
+
+		                // Parse the returned JSON string into a JavaScript Object
+		                var obj = JSON.parse(data);
+
+		                var htmlContent = "";
+		                htmlContent = htmlContent + "Raw Response Data: [" + data + "] <br />";
+		                htmlContent = htmlContent + "obj.MemberID: [" + obj.MemberID + "] <br />";
+
+		                $("#WebServiceResponse").html(htmlContent);
+		            },
+		            error: function (data) {
+		                console.log("Error");
+		            }
+		        });
+		    }
+
+		    function GetFRToken() {
+		        var client_id = 'plM4LEB2P4Wc7uIvTzJtEJmLx60ugoGy21NROtsv';
+		        var client_secret = 'GEX7FL2yB912oPZ7GhNgiPiOoBS8Zk5VMNMd0XUXaWXACGHYcZTO5CLGabd08R8kSYDL0bsekQ7xJiYSmHqKe6YldulkuqegirDM4m5qGYvFAeF8frsOdHoXkxbbOC4g';
+		        var refresh_token = '2a98d557c1a73a260ebc6ea9461674cc8c6398dd';
+		        //var wsUrl = 'https://aacr.fluidreview.com/api/v2/o/token/&grant_type=refresh_toke&client_id=' + client_id + ';
+
+		        $.ajax({
+		            //crossOrigin: true,
+		            
+		            url: wsUrl,
+		            method: 'GET',
+		            //headers: { "x-access-token": secure.getToken(), "x-access-finger": finger.getFinger() },
+		            headers: { 'Authorization': 'Bearer b62f65345b4291317551a1c31d35bb03606327df' },
+		            //authorization: Bearer <ACCESS_TOKEN>
+		            contentType: 'application/json',
+		            data: '',
+		            dataType: 'JSON',
+		            success: function (data) {
+		                console.log('Success');
+		                console.log("data = [" + data + "]");
+
+		                // Parse the returned JSON string into a JavaScript Object
+		                var obj = JSON.parse(data);
+
+		                var htmlContent = '';
+		                htmlContent = htmlContent + "Raw Response Data: [" + data + "] <br />";
+		                htmlContent = htmlContent + "obj.MemberID: [" + obj.MemberID + "] <br />";
+
+		                $("#AbstractIdResponse").html(htmlContent);
+		            },
+		            error: function (data) {
+		                console.log("Error");
+		            }
+		        });
+		        
+		        //<YOUR_SITE>/api/v2/o/token/
+                //-d "grant_type=refresh_token\
+                //&client_id=<CLIENT_ID>\
+                //&client_secret=<CLIENT_SECRET>\
+                //&refresh_token=<REFRESH_TOKEN>"
+		    }
+
+
+		    function GetAbstractById(abstractId) {
+		        var wsUrl = 'https://aacr.fluidreview.com/api/v2/submissions/' + abstractId + '/';
+
+                jQuery.cors
+
+		        $.ajax({
+		            crossOrigin: true,
+		            
+		            url: wsUrl,
+		            method: 'GET',
+		            headers: {
+		                'Access-Control-Allow-Origin': 'https://www.aacr.org',
+		                'Access-Control-Allow-Credentials': 'true',
+		                'Access-Control-Allow-Methods': 'GET, POST',
+		                //'Origin': 'https://aacr.fluidreview.com/',
+		                'Authorization': 'Bearer 6ac16416ff5b8d6919454ebf2c4a2f1e6b1d3e35'
+		            },
+		            contentType: 'application/json',
+		            data: '',
+		            dataType: 'JSON',
+		            secure: true,
+		            success: function (data) {
+		                console.log('Success');
+		                console.log("data = [" + data + "]");
+
+		                // Parse the returned JSON string into a JavaScript Object
+		                var obj = JSON.parse(data);
+
+		                var htmlContent = '';
+		                htmlContent = htmlContent + "Raw Response Data: [" + data + "] <br />";
+		                htmlContent = htmlContent + "obj.MemberID: [" + obj.MemberID + "] <br />";
+
+		                $("#AbstractIdResponse").html(htmlContent);
+		            },
+		            error: function (data) {
+		                console.log("Error");
+		            }
+		        });
+		    }
+
+            // mock submission value
+		    var testSubmission =
+                {
+                    "AbstractPresentationNumber": "PR01",
+                    "Title": "This is a Test Abstract",
+                    "Status": "In Progress",
+                    "Stage":"Accepted",
+                    "Award":"75075",
+                    "PresentingAuthor": {
+                        "Name": "Dean Martin",
+                        "FirstName": "Dean",
+                        "MiddleName": "Z",
+                        "LastName": "Martin",
+                        "InstituteID": "1"
+                    },
+                    "OtherAuthors": [{
+                        "AuthorName": "Robert Bolton",
+                        "FirstName": "Robert",
+                        "MiddleName": "X",
+                        "LastName": "Bolton",
+                        "InstituteID": "1"
+                    },
+                    {
+                        "AuthorName": "Rick Wise",
+                        "FirstName": "Rick",
+                        "MiddleName": "P",
+                        "LastName": "Wise",
+                        "InstituteID": "2"
+                    },
+                    {
+                        "AuthorName": "Frank Sinatra",
+                        "FirstName": "Frank",
+                        "MiddleName": "A",
+                        "LastName": "Sinatra",
+                        "InstituteID": "3"
+                    }],
+                    "Institutes": [{
+                        "Name": "Penn",
+                        "InstituteID": "1",
+                        "InstituteCity": "Philadelphia",
+                        "InstituteState": "PA",
+                        "InstituteCountry": "USA"
+                    },
+                    {
+                        "Name": "Drexel",
+                        "InstituteID": "2",
+                        "InstituteCity": "Philadelphia",
+                        "InstituteState": "PA",
+                        "InstituteCountry": "USA"
+                    },
+                    {
+                        "Name": "Temple",
+                        "InstituteID": "3",
+                        "InstituteCity": "Philadelphia",
+                        "InstituteState": "PA",
+                        "InstituteCountry": "USA"
+                    }],
+                    "Body": "The <strong>HTML</strong> abstract content<sup>2</sup> goes here."
+                };                              
+
+		    // mock author index
+		    var testAuthorIndex = {
+		        "AuthorIndex": [{
+		            "Name": "Bolton, Robert",
+		            "Abstracts": [{
+		                "ID": "B59"
+		            }]
+		        },
+                {
+                    "Name": "Adams, John",
+                    "Abstracts": [{
+                        "ID": "A67"
+                    }]
+                },
+                {
+                    "Name": "Bild, Andrea",
+                    "Abstracts": [{
+                        "ID": "A47"
+                    },
+                    {
+                        "ID": "PR06"
+                    }]
+                }]
+		    };
+
+            // load submission object from json file
+		    function LoadJSON() {
+		        //$.getJSON("http://localhost:63046/submission.htm", function (data) { })
+		        //$.getJSON("http://localhost:63046/sampleData.htm", function (data) { })
+		        //$.getJSON("http://localhost:63046/allItems.htm", function (data) { })
+		        $.getJSON("http://localhost:63046/output.htm", function (data) { })
+
+                    .done(function (data) {
+
+                        // code for handling querying specific items
+                        //var responseData = data.results[11].responses;
+                        //var response = responseId.value;
+                        //var responseData = data.results[response].responses;
+                        //var responseCount = Object.keys(data.results[response].responses).length;
+                        //testResponseCount.innerHTML = responseCount;
+
+                        // idCounter is used to track each submission and give it a unique id
+                        // will be replaced by a id from FluidReview
+                        var idCounter = 1;
+
+                        alert('results count: ' + data.results.length);
+                        alert('looping through results');
+
+                        // loop through results
+                        for (r = 0; r < data.results.length; r++) {
+
+                            var responseData = data.results[r].responses;
+                            var responseCount = 0;
+                            if (data.results[r].responses[146095] != null) {
+                                var authorResponseFieldCount = (Object.keys(data.results[r].responses[146095]).length);
+                                responseCount = authorResponseFieldCount / 9;
+                            }
+
+
+                            var abstractID = "";
+                            var abstractTitle = "";
+                            var abstractStatus = '';
+                            var abstractStage = '';
+                            var abstractAward = '';
+                            var abstractBody = "";
+                            var abstractPrimaryAuthorFirstName = "";
+                            var abstractPrimaryAuthorLastName = "";
+                            var abstractPrimaryAuthorInstitute = "";
+                            var abstractOtherAuthorOrder1 = "";
+                            var abstractOtherAuthorFirstName1 = "";
+                            var abstractOtherAuthorLastName1 = "";
+                            var abstractOtherAuthorInstitute1 = "";
+                            var abstractInstitutions = new Array();
+                            var tempAbstractPrimaryAuthorFirstName = "";
+                            var tempAbstractPrimaryAuthorLastName = "";
+                            var tempAbstractPrimaryAuthorInstitute = "";
+                            var tempAbstractOtherAuthorOrder = "";
+                            var tempAbstractOtherAuthorFirstName = "";
+                            var tempAbstractOtherAuthorMiddleName = "";
+                            var tempAbstractOtherAuthorLastName = "";
+                            var tempAbstractOtherAuthorInstitute = "";
+                            var tempAbstractInstitutions = new Array();
+
+                            // populate mock object with values
+                            //testSubmission.ID = "PR" + (r+1); // set below only if the submission is valid
+                            
+                            abstractID = data.results[r].AbstractPresentationNumber;
+                            testSubmission.ID = abstractID;
+                            abstractStatus = data.results[r].status;
+                            testSubmission.Status = abstractStatus;
+                            abstractStage = data.results[r].round;
+                            testSubmission.Stage = abstractStage;
+                            abstractAward = data.results[r].award;
+                            testSubmission.Award = abstractAward;
+
+                            // skip submissions that aren't complete or accepted to speed up processing
+                            if (abstractStatus != 'Complete' || abstractStage != 'Accepted') {
+                                //continue;
+                            }
+
+                            // skip submissions that aren't for the target conference
+                            // 75075 - invited abstracts - auto approved
+                            // 75031 - submitted abstracts - need to be reviewed
+                            if (abstractAward != '75075' && abstractAward != '75031') {
+                                //continue;
+                            }
+
+
+                            // initialize collections
+                            testSubmission.OtherAuthors = new Array();
+                            testSubmission.Institutes = new Array();
+
+                            // loop through responses collection
+                            for (var field in responseData) {
+                                switch (field) {
+                                    case "144999":
+
+                                        // Populate Abstract Title and Body
+                                        abstractTitle = responseData[field]["indI8rpg7e"];
+                                        testSubmission.Title = abstractTitle;
+
+                                        if (abstractTitle == '') {
+                                            continue;
+                                        }
+
+                                        abstractBody = responseData[field]["Sk8X6Z2Wzo"];
+                                        testSubmission.Body = abstractBody;
+
+                                        break;
+
+                                    case "146373":
+
+                                        // Populate Abstract Title and Body
+                                        abstractTitle = responseData[field]["indI8rpg7e"];
+                                        testSubmission.Title = abstractTitle;
+
+                                        if (abstractTitle == '') {
+                                            continue;
+                                        }
+
+                                        abstractBody = responseData[field]["Sk8X6Z2Wzo"];
+                                        testSubmission.Body = abstractBody;                                        
+
+                                        break
+
+                                    case "146095":
+
+                                        // Populate Primary Author Data
+                                        var primaryAuthorIdBase = 'HGqHz5edqN_';
+                                        abstractPrimaryAuthorFirstName = responseData[field][primaryAuthorIdBase + "0"];
+                                        abstractPrimaryAuthorLastName = responseData[field][primaryAuthorIdBase + "1"];
+                                        abstractPrimaryAuthorInstitute = responseData[field][primaryAuthorIdBase + "3"];
+
+                                        // primary author gets institute #1 - other authors start at #2
+                                        testSubmission.PresentingAuthor.InstituteID = "1";
+                                        testSubmission.PresentingAuthor.Name = abstractPrimaryAuthorFirstName + " " + abstractPrimaryAuthorLastName;
+                                        testSubmission.PresentingAuthor.FirstName = abstractPrimaryAuthorFirstName;
+                                        testSubmission.PresentingAuthor.LastName = abstractPrimaryAuthorLastName;
+
+                                        abstractInstitutions.push(abstractPrimaryAuthorInstitute);
+
+                                        // initiate institute counter
+                                        var instituteCounter = 1;
+                                        var authorInstituteId = 1;
+
+                                        testSubmission.Institutes.push({
+                                            "Name": responseData[field][primaryAuthorIdBase + '3'], "InstituteID": instituteCounter,
+                                            "InstituteCity": responseData[field][primaryAuthorIdBase + '4'],
+                                            "InstituteState": responseData[field][primaryAuthorIdBase + '5'],
+                                            "InstituteCountry": responseData[field][primaryAuthorIdBase + '6']
+                                        });
+
+                                        // increment institute counter
+                                        instituteCounter++;
+
+                                        // Populate Other Author(s) Data -- 25 max
+                                        var otherAuthorIdBase = 'e8PDbLNWiU_';
+
+                                        // loop over responses to get other authors information
+                                        for (i = 0; i < responseCount; i++) {
+
+                                            var xfactor = 9; // items are repeated every 9th item (base 9)
+
+                                            // create and push other authors
+                                            tempAbstractOtherAuthorOrder1 = responseData[field][otherAuthorIdBase + (i * xfactor + 0)];
+                                            tempAbstractOtherAuthorFirstName = responseData[field][otherAuthorIdBase + (i * xfactor + 2)];
+                                            tempAbstractOtherAuthorMiddleName = responseData[field][otherAuthorIdBase + (i * xfactor + 3)];
+                                            tempAbstractOtherAuthorLastName = responseData[field][otherAuthorIdBase + (i * xfactor + 4)];
+                                            tempAbstractOtherAuthorInstitute = responseData[field][otherAuthorIdBase + (i * xfactor + 5)];
+
+                                            // skip if the row if data is blank in FluidReview - it's built to hold 25 authors
+                                            if (tempAbstractOtherAuthorFirstName === '' && tempAbstractOtherAuthorLastName === '' && tempAbstractOtherAuthorInstitute === '') {
+                                                continue;
+                                            }
+
+                                            if (tempAbstractOtherAuthorFirstName == undefined || tempAbstractOtherAuthorLastName == undefined || tempAbstractOtherAuthorInstitute == undefined) {
+                                                continue;
+                                            }
+
+                                            
+                                            // check if author is a also a presenting author
+                                            if (testSubmission.PresentingAuthor.Name != tempAbstractOtherAuthorFirstName.trim() + " " + tempAbstractOtherAuthorLastName.trim()){
+
+                                                // check if author is a dup
+                                                var authorIndexCheck = testSubmission.OtherAuthors.findIndex(x => x.AuthorName == tempAbstractOtherAuthorFirstName.trim() + " " + tempAbstractOtherAuthorLastName.trim());
+                                                //alert(indexCheck);
+                                                if (authorIndexCheck === -1){
+
+                                                    // other authors institute ids start at #2, after presenting authors institute of #1
+                                                    //testSubmission.OtherAuthors.push({ "AuthorName": tempAbstractOtherAuthorFirstName.trim() + " " + tempAbstractOtherAuthorLastName.trim(), "FirstName": tempAbstractOtherAuthorFirstName.trim(), "LastName": tempAbstractOtherAuthorLastName.trim(), "InstituteID": i + 2 });
+
+                                                    // check to see if the institute name is repeated
+                                                    var instituteIndexCheck = testSubmission.Institutes.findIndex(x => x.Name == tempAbstractOtherAuthorInstitute);
+                                                    if (instituteIndexCheck === -1){
+                                                        // create and push institution info
+                                                        testSubmission.Institutes.push({
+                                                            "Name": tempAbstractOtherAuthorInstitute, "InstituteID": instituteCounter,
+                                                            "InstituteCity": responseData[field][otherAuthorIdBase + (i * xfactor + 6)],
+                                                            "InstituteState": responseData[field][otherAuthorIdBase + (i * xfactor + 7)],
+                                                            "InstituteCountry": responseData[field][otherAuthorIdBase + (i * xfactor + 8)]
+                                                        });
+
+                                                        authorInstituteId = instituteCounter; // if institute isn't a dup, grab the id of the new institute being added
+                                                        instituteCounter++; // increment for next institute
+                                                        
+                                                    } else {
+                                                        authorInstituteId = instituteIndexCheck + 1; // if institute is found, grab id (+1 because of zero base)
+                                                    }
+
+                                                    // push author with institute id
+                                                    testSubmission.OtherAuthors.push({ "AuthorName": tempAbstractOtherAuthorFirstName.trim() + " " + tempAbstractOtherAuthorMiddleName.trim() + " " + tempAbstractOtherAuthorLastName.trim(), "FirstName": tempAbstractOtherAuthorFirstName.trim(), "MiddleName": tempAbstractOtherAuthorMiddleName.trim(), "LastName": tempAbstractOtherAuthorLastName.trim(), "InstituteID": authorInstituteId });
+                                                    abstractInstitutions.push(tempAbstractOtherAuthorInstitute);
+
+                                                    //instituteCounter++;
+                                                }
+                                            }
+
+                                            
+
+                                        }
+                                }
+                            }
+
+                            // check to see if the submission is valid
+                            // abstracts should be 'Complete' and 'Accepted' in order to be valid, per Amy
+                            //if (abstractStatus == 'Complete' && abstractStage == 'Accepted' && abstractTitle != '') {
+                            if (abstractStatus == 'Complete' && abstractTitle != '') {
+                                //testSubmission.ID = "PR" + idCounter; // only assign an id if we use the submission
+                                PopulateForm();
+                                
+                                // push primary author
+                                // presenting authors don't have middle names in json data
+                                testAuthorIndex.AuthorIndex.push({ 'Name': testSubmission.PresentingAuthor.LastName.trim() + ', ' + testSubmission.PresentingAuthor.FirstName.trim(), 'Abstracts': [{ 'ID': testSubmission.ID }] });
+
+                                // loop through other authors
+                                for (i = 0; i < testSubmission.OtherAuthors.length; i++){
+
+                                    // check if middle name is valid - some other authors have bad values
+                                    if (testSubmission.OtherAuthors[i].MiddleName == 'Optional' || testSubmission.OtherAuthors[i].MiddleName == ''){
+                                        // add without middle name
+                                        testAuthorIndex.AuthorIndex.push({ 'Name': testSubmission.OtherAuthors[i].LastName.trim() + ', ' + testSubmission.OtherAuthors[i].FirstName.trim(), 'Abstracts': [{ 'ID': testSubmission.ID }] });
+                                    } else{
+                                        // add with middle name
+                                        testAuthorIndex.AuthorIndex.push({ 'Name': testSubmission.OtherAuthors[i].LastName.trim() + ', ' + testSubmission.OtherAuthors[i].FirstName.trim() + ' ' + testSubmission.OtherAuthors[i].MiddleName.trim(), 'Abstracts': [{ 'ID': testSubmission.ID }] });
+                                    }
+                                }
+
+                                idCounter++;  // increment the id
+                                clearTestSubmission();  // clear the fields to avoid values carrying over from previous submissions
+                            }
+                        }
+
+                        alert('looping through results complete');
+
+                        }).fail(function (jqxhr, textStatus, error) {
+                            console.log("failure " + textStatus + ", " + error);
+                    }
+                )
+		    }
+
+            // clear submission to prevent values from persisting across submissions
+		    function clearTestSubmission() {
+		        testSubmission.Title = '';
+		        //testSubmission.PresentingAuthor = '';
+		        testSubmission.OtherAuthors = new Array();
+		        testSubmission.Institutes = new Array();
+		        testSubmission.Body = '';
+		    }
+
+		    // takes values from submission and populates html form
+		    function PopulateTestForm() {
+		        testAbstractId.innerHTML = testSubmission.ID;
+		        testAbstractTitle.innerHTML = testSubmission.Title;
+		        testPresentingAuthor.innerHTML = testSubmission.PresentingAuthor.Name + testSubmission.PresentingAuthor.InstituteID;
+
+		        testOtherAuthors.innerHTML = testSubmission.OtherAuthors.length;
+		        for (i = 0; i < testSubmission.OtherAuthors.length; i++) {
+		            testOtherAuthors.innerHTML += ', ' + testSubmission.OtherAuthors[i].AuthorName + testSubmission.OtherAuthors[i].InstituteID;
+		        }
+
+		        testInstitutes.innerHTML = testSubmission.Institutes.length;
+		        for (i = 0; i < testSubmission.Institutes.length; i++) {
+		            testInstitutes.innerHTML += ', ' + testSubmission.Institutes[i].InstituteID + testSubmission.Institutes[i].Name;
+		            testInstitutes.innerHTML += ', ' + testSubmission.Institutes[i].InstituteID + testSubmission.Institutes[i].InstituteCity;
+		            testInstitutes.innerHTML += ', ' + testSubmission.Institutes[i].InstituteID + testSubmission.Institutes[i].InstituteState;
+		            testInstitutes.innerHTML += ', ' + testSubmission.Institutes[i].InstituteID + testSubmission.Institutes[i].InstituteCountry;
+		            testInstitutes.innerHTML += ', ';
+		        }
+
+		        testAbstractBody.innerHTML = testSubmission.Body;
+
+		    }
+
+            // determines if institute superscripts should be displayed
+		    function boolShowInstituteIds(instituteCount){
+		        
+		        if (instituteCount > 1) {
+		            return true;
+		        }
+		        return false;
+		    }
+
+            // takes values from submission and populates abstract html form 
+		    function PopulateForm() {
+		        abstractSubmission.innerHTML += '<br />';
+		        abstractSubmission.innerHTML += '<br />';
+		        abstractSubmission.innerHTML += testSubmission.ID + ' ';
+		        abstractSubmission.innerHTML += '<strong>' + testSubmission.Title + '</strong>.  ';
+		        //abstractSubmission.innerHTML += '<strong> Status:</strong> ' + testSubmission.Status + '<br />';
+
+		        var showInstituteIds = boolShowInstituteIds(testSubmission.Institutes.length);
+
+		        if (showInstituteIds){
+		            abstractSubmission.innerHTML += '<u>' + testSubmission.PresentingAuthor.Name + '</u>' + '<sup>' + testSubmission.PresentingAuthor.InstituteID + '</sup>';
+		        } else {
+		            abstractSubmission.innerHTML += '<u>' + testSubmission.PresentingAuthor.Name + '</u>';
+		        }
+
+		        // loop through other authors
+		        if (testSubmission.OtherAuthors.length > 0) {
+		            //alert('other author length: ' + testSubmission.OtherAuthors.length);
+		            for (var a = 0; a < testSubmission.OtherAuthors.length; a++) {
+		                //abstractSubmission.innerHTML += ', ' + testSubmission.OtherAuthors[a].AuthorName + '<sup>' + testSubmission.OtherAuthors[a].InstituteID + '</sup>';
+		                
+		                abstractSubmission.innerHTML += ', ' + testSubmission.OtherAuthors[a].FirstName
+		                if (testSubmission.OtherAuthors[a].MiddleName != 'Optional' && testSubmission.OtherAuthors[a].MiddleName != ''){
+		                    abstractSubmission.innerHTML += ' ' + testSubmission.OtherAuthors[a].MiddleName
+		                }
+		                abstractSubmission.innerHTML += ' ' + testSubmission.OtherAuthors[a].LastName
+		                if (showInstituteIds){
+		                    abstractSubmission.innerHTML += '<sup>' + testSubmission.OtherAuthors[a].InstituteID + '</sup>';
+		                }
+		            }
+		        }
+		        abstractSubmission.innerHTML += '. '; // period after author listing
+
+                // loop through institutions
+		        for (i = 0; i < testSubmission.Institutes.length; i++) {
+		            if (i > 0) { abstractSubmission.innerHTML += ', ' }
+		            if (showInstituteIds){
+		                abstractSubmission.innerHTML += '<sup>' + testSubmission.Institutes[i].InstituteID + '</sup>' + testSubmission.Institutes[i].Name;
+		            } else {
+		                abstractSubmission.innerHTML += testSubmission.Institutes[i].Name;
+		            }
+		            abstractSubmission.innerHTML += ', ' + testSubmission.Institutes[i].InstituteCity;
+		            abstractSubmission.innerHTML += ', ' + testSubmission.Institutes[i].InstituteState;
+		            abstractSubmission.innerHTML += ', ' + testSubmission.Institutes[i].InstituteCountry;
+		        }
+		        abstractSubmission.innerHTML += '.<br />'; // period after institution listing
+
+                // add abstract body
+		        abstractSubmission.innerHTML += testSubmission.Body;
+		    }
+		    
+
+		    // takes values from author index and populates author index html form
+		    function PopulateAuthorIndex() {
+
+		        // clear html
+		        authorIndex.innerHTML = '';
+
+		        // sort the names alphabetically
+		        testAuthorIndex.AuthorIndex.sort(function(a, b){
+		            var nameA=a.Name.toLowerCase(), nameB=b.Name.toLowerCase()
+		            if (nameA < nameB) //sort string ascending
+		                return -1 
+		            if (nameA > nameB)
+		                return 1
+		            return 0 
+		        })
+
+                // loop through author index
+		        for (i = 0; i < testAuthorIndex.AuthorIndex.length ; i++) {
+
+                    // add author name
+		            authorIndex.innerHTML += testAuthorIndex.AuthorIndex[i].Name + "..........";
+
+                    // loop through abstracts for each author
+		            for (x = 0; x < testAuthorIndex.AuthorIndex[i].Abstracts.length ; x++) {
+		                if (x > 0) { authorIndex.innerHTML += ', ' }
+		                authorIndex.innerHTML +=  testAuthorIndex.AuthorIndex[i].Abstracts[x].ID;
+		            }
+
+		            authorIndex.innerHTML += '<br/>';
+		        }
+		    }
+
+            // saves html element as html file for download
+		    function saveToDoc(element, fileName) {
+		        var contentHTML = document.getElementById(element).innerHTML;
+		        var link = document.createElement('a');
+		        link.setAttribute('download', fileName);
+		        link.setAttribute('href', 'data:' + 'text/html' + ';charset=utf-8,' + encodeURIComponent(contentHTML));
+		        link.click();
+		    }
+
+		</script>
+</head>
+<body>
+        <button onclick="CallWebService()">Call Web Service</button>
+		
+        <table>
+            <tr>
+                <td>
+                    <p>Web Service Response</p>
+		            <div id="WebServiceResponse" style="width:400px; height:150px; border:1px solid #000000;"></div>
+
+                    <div>
+                        <input id="abstractIdTextBox"  type="text" /> <button onclick="GetAbstractById(abstractIdTextBox.value)">Call Web Service</button>
+                    </div>
+                    <div id="AbstractIdResponse" style="width:400px; height:150px; border:1px solid #000000;"></div>
+
+                    <br />
+                    <br />
+                    <button onclick="PopulateTestForm()">Populate Form from JSON</button><br />
+                    ID
+                    <div id="testAbstractId" style="width:400px; height:15px; border:1px solid #000000;"></div><br />
+                    Title
+                    <div id="testAbstractTitle" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                    Presenting Author
+                    <div id="testPresentingAuthor" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                    Response count
+                    <div id="testResponseCount" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                    Other Authors
+                    <div id="testOtherAuthors" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                    Institutes
+                    <div id="testInstitutes" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                    Body
+                    <div id="testAbstractBody" style="width:400px; height:150px; border:1px solid #000000;"></div><br />
+                </td>
+                <td>
+                    <!--<input id="responseId" type="text" />-->
+                    <button onclick="LoadJSON()">Load Submissions</button><br />
+                    <button onclick="saveToDoc('abstractSubmission', 'submission')">Save to Word Doc</button><br />
+                    <!--<button onclick="PopulateForm()">Populate Form from JSON</button><br />-->
+                    <div id="abstractSubmission" style="width:400px; height:750px; border:1px solid #000000;"></div><br />
+                </td>
+                <td>
+                    <button onclick="PopulateAuthorIndex()">Populate Author Index from JSON</button><br />
+                    <button onclick="saveToDoc('authorIndex', 'authorIndex')">Save to Word Doc</button><br />
+                    <div id="authorIndex" style="width:400px; height:750px; border:1px solid #000000;"></div><br />
+                </td>
+            </tr>
+        </table>
+		
+        
+        
+</body>
+</html>
